@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Support Center</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+  body, html {
+    margin: 0; padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: #ffffff;
+    color: #1c1f25;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background: #1652f0;
+    color: white;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 10px rgb(22 82 240 / 0.3);
+  }
+  header h1 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 2.5rem;
+    letter-spacing: 0.05em;
+  }
+  header p {
+    margin-top: 0.5rem;
+    font-weight: 500;
+    font-size: 1.125rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0.85;
+  }
+
+  main {
+    flex: 1;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+    gap: 1.8rem;
+  }
+
+  .card {
+    background: #f4f7ff;
+    border-radius: 14px;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 12px rgb(22 82 240 / 0.15);
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #1652f0;
+    text-align: center;
+  }
+  .card:hover, .card:focus {
+    border-color: #1652f0;
+    box-shadow: 0 8px 24px rgb(22 82 240 / 0.3);
+    transform: translateY(-6px);
+    outline: none;
+  }
+
+  .card-icon {
+    font-size: 3.8rem;
+    margin-bottom: 1rem;
+  }
+  .card-title {
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+  .card-desc {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #3a3f52;
+    line-height: 1.3;
+  }
+
+  /* Support icon */
+  .support-icon {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 72px;
+    height: 72px;
+    background: #1652f0;
+    border-radius: 50%;
+    box-shadow: 0 0 18px #1652f0aa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+    z-index: 10000;
+  }
+  .support-icon:hover, .support-icon:focus {
+    box-shadow: 0 0 26px 6px #1652f0cc;
+    outline: none;
+  }
+  .support-icon svg {
+    fill: white;
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Modal */
+  .modal {
+    position: fixed;
+    bottom: 110px;
+    right: 32px;
+    width: 380px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 45px rgba(22, 82, 240, 0.25);
+    display: none;
+    flex-direction: column;
+    z-index: 10001;
+    font-size: 1rem;
+    color: #1c1f25;
+  }
+  .modal.active {
+    display: flex;
+  }
+  .modal-header {
+    background: #1652f0;
+    color: white;
+    padding: 1rem 1.25rem;
+    font-weight: 700;
+    font-size: 1.3rem;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .modal-body {
+    padding: 1.5rem 1.5rem 2rem;
+  }
+  form label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.3rem;
+    color: #1652f0;
+  }
+  form input, form textarea {
+    width: 80%;
+    border: 1.5px solid #d1d9ff;
+    border-radius: 8px;
+    padding: 0.65rem 1rem;
+    font-size: 1rem;
+    font-family: inherit;
+    margin-bottom: 1rem;
+    background: #f9fbff;
+    color: #1c1f25;
+    transition: border-color 0.3s ease;
+  }
+  form input:focus, form textarea:focus {
+    outline: none;
+    border-color: #1652f0;
+    background: white;
+  }
+  form textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  form button {
+    background: #1652f0;
+    color: white;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    padding: 0.85rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  form button:hover {
+    background: #0f41c0;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    main {
+      margin: 1rem;
+      padding: 0 0.5rem;
+    }
+    .modal {
+      width: 90vw;
+      bottom: 90px;
+      right: 16px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Coinbase Support Center</h1>
+  <p>Helping you navigate your crypto journey with clear tools and expert support.</p>
+</header>
+
+<main role="main" aria-label="Support features">
+  <div class="cards" role="list">
+    <div class="card" role="listitem" tabindex="0" aria-label="Account Recovery Tool">
+      <div class="card-icon" aria-hidden="true">🔐</div>
+      <div class="card-title">Account Recovery</div>
+      <div class="card-desc">Step-by-step guidance to regain access to your Coinbase account securely.</div>
+    </div>
+
+    <div class="card" role="listitem" tabindex="0" aria-label="Real-Time Transaction Tracker">
+      <div class="card-icon" aria-hidden="true">⏱️</div>
+      <div class="card-title">Transaction Tracker</div>
+      <div class="card-desc">Monitor your blockchain transactions in real-time with detailed insights.</div>
+    </div>
+
+    <div class="card" role="listitem" tabindex="0" aria-label="Security Checkup">
+      <div class="card-icon" aria-hidden="true">🔒</div>
+      <div class="card-title">Security Checkup</div>
+      <div class="card-desc">Analyze your account for vulnerabilities and get personalized security tips.</div>
+    </div>
+
+    <div class="card" role="listitem" tabindex="0" aria-label="Fee Calculator">
+      <div class="card-icon" aria-hidden="true">🧮</div>
+      <div class="card-title">Fee Calculator</div>
+      <div class="card-desc">Estimate fees for your next transactions to optimize costs and timing.</div>
+    </div>
+  </div>
+</main>
+
+
+
+<!-- Modal -->
+<div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc">
+  <div class="modal-header">
+    <div id="modal-title">Contact Coinbase Support</div>
+    <button aria-label="Close support chat" id="modal-close">&times;</button>
+  </div>
+  <div class="modal-body" id="modal-desc">
+    <p>If you have any questions or need assistance, please fill out the form below:</p>
+    <form id="support-form" autocomplete="off">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" placeholder="Jane Doe" required />
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required />
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" placeholder="How can we help you?" required></textarea>
+
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+</div>
+<!-- Begin of Chaport Live Chat code --> <script type="text/javascript"> (function(w,d,v3){ w.chaportConfig = { appId : '692107d17ade1b726d852097', };  if(w.chaport)return;v3=w.chaport={};v3._q=[];v3._l={};v3.q=function(){v3._q.push(arguments)};v3.on=function(e,fn){if(!v3._l[e])v3._l[e]=[];v3._l[e].push(fn)};var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://app.chaport.com/javascripts/insert.js';var ss=d.getElementsByTagName('script')[0];ss.parentNode.insertBefore(s,ss)})(window, document); </script> <!-- End of Chaport Live Chat code -->
+</body>
+</html>
